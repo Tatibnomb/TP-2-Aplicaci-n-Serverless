@@ -14,6 +14,7 @@ function App() {
   useEffect(() => {
     const iniciar = async () => {
       const { data } = await supabase.auth.getSession();
+
       setSession(data.session);
 
       if (data.session) {
@@ -40,59 +41,133 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // ---------------- AUTH ----------------
+
   const register = async () => {
-    await supabase.auth.signUp({ email, password });
-    alert("Usuario creado");
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Usuario creado");
+    }
   };
 
   const login = async () => {
-    await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) alert(error.message);
   };
 
   const logout = async () => {
     await supabase.auth.signOut();
   };
 
-  const cargarTareas = async (id) => {
+  // ---------------- TAREAS ----------------
+
+  const cargarTareas = async (userId) => {
     const { data, error } = await supabase
       .from("tareas")
       .select("*")
-      .eq("user_id", id);
+      .eq("user_id", userId)
+      .order("id", { ascending: false });
 
-    if (!error) setTareas(data);
+    if (!error) {
+      setTareas(data);
+    }
   };
 
   const crearTarea = async () => {
-    await supabase.from("tareas").insert([
-      { titulo, user_id: session.user.id }
+    if (titulo.trim() === "") return;
+
+    const { error } = await supabase.from("tareas").insert([
+      {
+        titulo,
+        user_id: session.user.id,
+      },
     ]);
 
-    setTitulo("");
-    cargarTareas(session.user.id);
+    if (!error) {
+      setTitulo("");
+      cargarTareas(session.user.id);
+    }
   };
 
   const eliminarTarea = async (id) => {
-    await supabase.from("tareas").delete().eq("id", id);
-    cargarTareas(session.user.id);
+    // borrar instantáneo
+    setTareas(tareas.filter((t) => t.id !== id));
+
+    const { error } = await supabase
+      .from("tareas")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      cargarTareas(session.user.id);
+    }
   };
 
+  const editarTarea = async (id, tituloActual) => {
+    const nuevoTitulo = prompt("Editar tarea:", tituloActual);
+
+    if (!nuevoTitulo || nuevoTitulo.trim() === "") return;
+
+    // cambio instantáneo
+    const nuevasTareas = tareas.map((t) =>
+      t.id === id ? { ...t, titulo: nuevoTitulo } : t
+    );
+
+    setTareas(nuevasTareas);
+
+    const { error } = await supabase
+      .from("tareas")
+      .update({ titulo: nuevoTitulo })
+      .eq("id", id);
+
+    if (error) {
+      alert("No se pudo editar");
+      cargarTareas(session.user.id);
+    }
+  };
+
+  // ---------------- LOADING ----------------
+
   if (loading) return <h1>Cargando...</h1>;
+
+  // ---------------- LOGIN ----------------
 
   if (!session) {
     return (
       <div>
         <h1>StudyFlow</h1>
 
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Contraseña" onChange={(e) => setPassword(e.target.value)} />
+        <input
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        <br /><br />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <br />
+        <br />
 
         <button onClick={register}>Registrarse</button>
         <button onClick={login}>Login</button>
       </div>
     );
   }
+
+  // ---------------- APP ----------------
 
   return (
     <div>
@@ -119,25 +194,13 @@ function App() {
             <button onClick={() => eliminarTarea(t.id)}>
               ❌
             </button>
-      </li>
-    ))}
-</ul>
+          </li>
+        ))}
+      </ul>
 
       <button onClick={logout}>Cerrar sesión</button>
     </div>
   );
 }
 
-const editarTarea = async (id, tituloActual) => {
-  const nuevoTitulo = prompt("Editar tarea:", tituloActual);
-
-  if (!nuevoTitulo) return;
-
-  await supabase
-    .from("tareas")
-    .update({ titulo: nuevoTitulo })
-    .eq("id", id);
-
-  cargarTareas(session.user.id);
-};
 export default App;
