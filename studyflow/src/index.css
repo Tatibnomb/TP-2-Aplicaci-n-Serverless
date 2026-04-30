@@ -1,111 +1,99 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+/* Reseteo simple: saco márgenes que vienen por defecto */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* el padding no agranda los elementos */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
+/* Estilo del fondo de toda la página */
 body {
-  margin: 0;
+  font-family: Arial, sans-serif; /* fuente simple */
+  background-color: #ac818f; /* rosa clarito de fondo */
+  min-height: 100vh; /* ocupa toda la altura de la pantalla */
+  padding: 20px;
+  .container {
+  justify-content:  center }
 }
 
+/* Caja blanca central donde va todo */
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  max-width: 600px; /* no más de 600px de ancho */
+  margin: 30px auto; /* centrado horizontalmente */
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px; /* bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* sombrita suave */
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
+/* Título principal */
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  color: #ff0963; /* rosa fuerte */
+  text-align: center;
+  margin-bottom: 20px;
 }
+
+/* Subtítulos */
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+  color: #6a1b9a; /* violeta */
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* Inputs (cajitas para escribir) */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #f8bbd0; /* borde rosa clarito */
+  border-radius: 8px;
+  font-size: 14px;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Cuando el usuario hace click en un input */
+input:focus {
+  outline: none;
+  border-color: #d81b60; /* el borde se pone rosa fuerte */
+}
+
+/* Botones */
+button {
+  background-color: #d81b60; /* fondo rosa */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer; /* manito al pasar por encima */
+  font-size: 14px;
+  margin: 5px;
+}
+
+/* Cuando paso el mouse por encima del botón */
+button:hover {
+  background-color: #ad1457; /* se oscurece un poco */
+}
+
+/* Lista de tareas (saco los puntitos) */
+ul {
+  list-style: none;
+  margin-top: 15px;
+}
+
+/* Cada tarea de la lista */
+li {
+  background-color: #f3e5f5; /* violeta clarito */
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border-left: 5px solid #6a1b9a; /* barrita violeta a la izquierda */
+  display: flex;
+  justify-content: space-between; /* texto a la izquierda, botones a la derecha */
+  align-items: center;
+}
+
+/* Botón de cerrar sesión (lo dejo distinto) */
+.logout {
+  background-color: #757575; /* gris */
+  display: block;
+  margin: 20px auto 0; /* centrado y separado de arriba */
 }
