@@ -56,18 +56,25 @@ function App() {
     }
   };
 
-  const login = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+const login = async () => {
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    if (error) alert(error.message);
-  };
-
-  const logout = async () => {
-    await supabase.auth.signOut();
-  };
+  if (error) {
+    if (error.message.includes("Invalid login credentials")) {
+      alert("Email o contraseña incorrectos");
+    } else if (error.message.includes("Email not confirmed")) {
+      alert("Tenés que confirmar tu email antes de entrar");
+    } else {
+      alert(error.message);
+    }
+  }
+};
+const logout = async () => {
+  await supabase.auth.signOut();
+};
 
   // ---------------- TAREAS ----------------
 
@@ -149,12 +156,14 @@ function App() {
 
         <input
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Contraseña"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
@@ -188,11 +197,11 @@ function App() {
             {t.titulo}
 
             <button onClick={() => editarTarea(t.id, t.titulo)}>
-              ✏️
+              
             </button>
 
             <button onClick={() => eliminarTarea(t.id)}>
-              ❌
+              
             </button>
           </li>
         ))}
