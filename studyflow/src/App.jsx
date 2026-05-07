@@ -56,22 +56,7 @@ function App() {
     }
   };
 
-const login = async () => {
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) {
-    if (error.message.includes("Invalid login credentials")) {
-      alert("Email o contraseña incorrectos");
-    } else if (error.message.includes("Email not confirmed")) {
-      alert("Tenés que confirmar tu email antes de entrar");
-    } else {
-      alert(error.message);
-    }
-  }
-};
+n
 const logout = async () => {
   await supabase.auth.signOut();
 };
