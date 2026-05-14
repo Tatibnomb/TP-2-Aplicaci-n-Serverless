@@ -41,25 +41,23 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // ---------------- AUTH ----------------
+ // ---------------- AUTH ----------------
 
-  const register = async () => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+const register = async () => {
+  const { error } = await supabase.auth.signUp({ email, password });
+  if (error) alert(error.message);
+  else alert("Usuario creado");
+};
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert("Usuario creado");
-    }
-  };
+const login = async () => {
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) alert(error.message);
+};
 
-n
 const logout = async () => {
   await supabase.auth.signOut();
 };
+
 
   // ---------------- TAREAS ----------------
 
