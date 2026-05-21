@@ -58,7 +58,7 @@ input:focus {
 
 /* Botones */
 button {
-  background-color: #d81b60; /* fondo rosa */
+  background-color: #e2769e; /* fondo rosa */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -70,7 +70,7 @@ button {
 
 /* Cuando paso el mouse por encima del botón */
 button:hover {
-  background-color: #ad1457; /* se oscurece un poco */
+  background-color: #d15a8e; /* se oscurece un poco */
 }
 
 /* Lista de tareas (saco los puntitos) */

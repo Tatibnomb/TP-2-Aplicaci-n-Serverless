@@ -180,11 +180,11 @@ const logout = async () => {
             {t.titulo}
 
             <button onClick={() => editarTarea(t.id, t.titulo)}>
-              
+              ✏
             </button>
 
             <button onClick={() => eliminarTarea(t.id)}>
-              
+              ❌
             </button>
           </li>
         ))}
