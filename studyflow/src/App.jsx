@@ -52,10 +52,15 @@ const register = async () => {
 const login = async () => {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) alert(error.message);
+  else {
+    setEmail("");
+    setPassword("");
+  }
 };
 
 const logout = async () => {
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) alert(error.message);
 };
 
 
@@ -163,9 +168,9 @@ const logout = async () => {
 
   return (
     <div>
-      <h1>Bienvenido</h1>
+      <h1>¡Bienvenido/a a tu admin de tareas!</h1>
       <p>{session.user.email}</p>
-
+      <br></br>
       <input
         placeholder="Nueva tarea"
         value={titulo}
@@ -180,7 +185,7 @@ const logout = async () => {
             {t.titulo}
 
             <button onClick={() => editarTarea(t.id, t.titulo)}>
-              ✏
+            ✏️
             </button>
 
             <button onClick={() => eliminarTarea(t.id)}>
